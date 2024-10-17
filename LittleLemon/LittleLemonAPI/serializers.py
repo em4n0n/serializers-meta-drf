@@ -7,6 +7,7 @@ from .models import MenuItem
 #     inventory = serializers.IntegerField()
 
 class MenuItemSerializer(serializers.ModelSerializer):
+    stock = serializers.IntegerField(source='inventory')
     class Meta:
         model = MenuItem
-        fields = ['id', 'title', 'price', 'inventory']
+        fields = ['id', 'title', 'price', 'inventory', 'stock']
