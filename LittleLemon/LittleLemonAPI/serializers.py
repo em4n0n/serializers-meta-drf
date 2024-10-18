@@ -8,10 +8,14 @@ from .models import Category
 #     price = serializers.DecimalField(max_digits=6, decimal_places=2)
 #     inventory = serializers.IntegerField()
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categoryfields = ['id', 'slug', 'title']
+
 class MenuItemSerializer(serializers.ModelSerializer):
     stock = serializers.IntegerField(source='inventory')
     price_after_tax = serializers.SerializerMethodField(method_name = 'calculate_tax')
-    category = serializers.StringRelatedField()
+    category = CategorySerializer
     class Meta:
         model = MenuItem
         fields = ['id', 'title', 'price', 'stock', 'price_after_tax', 'category']
