@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import MenuItem
 from decimal import Decimal
 from .models import Category
+from .models import Book
 # class MenuItemSerializer(serializers.Serializer):
 #     id = serializers.IntegerField()
 #     title = serializers.CharField(max_length=255)
@@ -15,10 +16,15 @@ class CategorySerializer(serializers.ModelSerializer):
 class MenuItemSerializer(serializers.ModelSerializer):
     stock = serializers.IntegerField(source='inventory')
     price_after_tax = serializers.SerializerMethodField(method_name = 'calculate_tax')
-    category = CategorySerializer
+    category = CategorySerializer(read_only=True)
     class Meta:
         model = MenuItem
         fields = ['id', 'title', 'price', 'stock', 'price_after_tax', 'category']
         
 def calculate_tax(self, product:MenuItem):
     return product.price * Decimal(1.1)
+
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ['id', 'title', 'author', 'price']
