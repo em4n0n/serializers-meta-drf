@@ -28,6 +28,8 @@ def menu_items(request):
         if ordering:
             ordering_fields = ordering.split(",")
             items = items.order_by(*ordering_fields)
+            
+        paginator = Paginator(items,per_page=perpage)
         serialized_item = MenuItemSerializer(items, many=True)
         return Response(serialized_item.data)
 
