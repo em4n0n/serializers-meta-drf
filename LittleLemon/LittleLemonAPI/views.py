@@ -30,6 +30,10 @@ def menu_items(request):
             items = items.order_by(*ordering_fields)
             
         paginator = Paginator(items,per_page=perpage)
+        try:
+            items = paginator.page(number=page)
+        except EmptyPage:
+            items = []
         serialized_item = MenuItemSerializer(items, many=True)
         return Response(serialized_item.data)
 
