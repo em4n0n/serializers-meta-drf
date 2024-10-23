@@ -7,6 +7,7 @@ from .models import Book
 from rest_framework import generics
 from .serializers import BookSerializer
 from rest_framework import status
+from django.core.paginator import Paginator, EmptyPage
 # Create your views here.
 @api_view()
 def menu_items(request):
@@ -16,7 +17,8 @@ def menu_items(request):
         to_price = request.query_params.get('to_price')
         search = request.query_params.get('search')
         ordering = request.query_params.get('ordering')
-        
+        perpage = request.query_params.get('perpage', default=2)
+        page = request.query_params.get('page', default=1)
         if category_name:
             items = items.filter(category__title=category_name)
         if to_price:
